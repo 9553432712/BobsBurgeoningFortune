@@ -10,4 +10,4 @@ Java 8
 
 Gradle latest 
 
-Note: The application calls external service to get currency value of crypto value
+Note: The application calls external service to get currency value of crypto currency
