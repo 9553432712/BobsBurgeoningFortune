@@ -18,19 +18,13 @@ class MainTest {
 
   @Test
   public void testParseJson() throws Exception {
-    Double result = Main.read("{'EUR': 123.0}", "EUR");
+    Double result = Main.convertStringToJson("{'EUR': 123.0}", "EUR");
     assertEquals(Double.valueOf(123.0), result);
   }
 
   @Test
-  public void testRead_withInvalidFile_shouldReturnNull() throws Exception {
-    Map<String, Integer> result = Main.read("fileName");
-    assertNull(result);
-  }
-
-  @Test
-  public void testRead_withValidFile_shouldReturnMap() throws Exception {
-    Map<String, Integer> result = Main.read("/bobs_crypto.txt");
+  public void testRead() throws Exception {
+    Map<String, Integer> result = Main.readFile("/bobs_crypto.txt");
     assertNotNull(result);
     assertEquals(3, result.size());
   }

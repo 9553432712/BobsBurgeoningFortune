@@ -22,22 +22,21 @@ public class Main {
 
 
   public static void main(String a[]) {
-    System.out.println("******************************The dashboard is******************************");
-    Map<String, Integer> data = read(FILE_NAME);
+    System.out.println("-----------------HELLO BOB-------------------------");
+    Map<String, Integer> data = readFile(FILE_NAME);
     String externalServiceOutput;
     List<String> finalDashBoard = new ArrayList<>();
     for (Map.Entry<String, Integer> d : data.entrySet()) {
       externalServiceOutput = callService(d.getKey(), CURRENCY_TYPE);
-      Double price = read(externalServiceOutput, CURRENCY_TYPE);
+      Double price = convertStringToJson(externalServiceOutput, CURRENCY_TYPE);
       finalDashBoard.add(String
-          .format("Current value of %s of %s quantity value is %s", d.getKey(), d.getValue(), price * d.getValue()));
+          .format("%s of %s quantity is %s", d.getKey(), d.getValue(), price * d.getValue()));
+      System.out.println(finalDashBoard);
     }
-    for (String s : finalDashBoard) {
-      System.out.println(s);
-    }
+    System.out.println(finalDashBoard);
   }
 
-  public static Map<String, Integer> read(String fileName) {
+  public static Map<String, Integer> readFile(String fileName) {
     Map<String, Integer> data = null;
     try {
       InputStream is = Main.class.getResourceAsStream(fileName);
@@ -46,7 +45,6 @@ public class Main {
       String s[];
       data = new HashMap<String, Integer>();
       while ((line = reader.readLine()) != null) {
-//        System.out.println(line);
         if (line != null && line.length() > 0) {
           if (line.contains("=")) {
             s = line.split("=");
@@ -63,22 +61,21 @@ public class Main {
 
     } catch (FileNotFoundException fileNotFoundException) {
       System.out.println("File not found");
-      fileNotFoundException.printStackTrace();
+
     } catch (NullPointerException nullPointer) {
       System.out.println("File not found");
-      nullPointer.printStackTrace();
+
     } catch (IOException ioException) {
       System.out.println("Exception occured while process the file");
-      ioException.printStackTrace();
-    } catch (NumberFormatException numberFormatException) {
+
+    } catch (Exception e) {
       System.out.println("Data in the file inconsistent");
-      numberFormatException.printStackTrace();
+
     }
-//    System.out.println(data);
     return data;
   }
 
-  public static Double read(String inputJsonString, String currencyType) {
+  public static Double convertStringToJson(String inputJsonString, String currencyType) {
     Double resultData = 0D;
     try {
 
@@ -90,9 +87,7 @@ public class Main {
       Object result = engine.eval(script);
       Map<String, Double> contents = (Map) result;
       resultData = contents.get(currencyType);
-      contents.forEach((t, u) -> {
-//        System.out.println(t.toString());
-      });
+
     } catch (Exception e) {
       e.printStackTrace();
     }
